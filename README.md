@@ -1,2 +1,1 @@
-This is a Java project template for the Luna version of Eclipse JDT and
-Eclipse m2e. It also enables the FindBugs builder.
+**reasm-z80** is a Zilog Z80 Family assembler based on **reasm-core**.
