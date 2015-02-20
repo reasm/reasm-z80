@@ -1,5 +1,6 @@
 package org.reasm.z80.assembly.internal;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
 import javax.annotation.CheckForNull;
@@ -10,6 +11,7 @@ import org.reasm.commons.source.LogicalLine;
 import org.reasm.commons.source.LogicalLineReader;
 import org.reasm.commons.source.SourceLocationUtils;
 import org.reasm.expressions.EvaluationContext;
+import org.reasm.messages.WrongNumberOfOperandsErrorMessage;
 import org.reasm.source.SourceLocation;
 
 import ca.fragag.Consumer;
@@ -84,6 +86,14 @@ final class Z80AssemblyContext implements Consumer<AssemblyMessage>, CustomAssem
         this.builder.addMessage(message);
     }
 
+    void addWrongNumberOfOperandsErrorMessage() {
+        this.addMessage(new WrongNumberOfOperandsErrorMessage());
+    }
+
+    void appendByte(byte by) throws IOException {
+        this.builder.appendAssembledData(by);
+    }
+
     /**
      * Defines all the labels on the logical line of the current assembly step with the current program counter as their value.
      */
@@ -117,6 +127,14 @@ final class Z80AssemblyContext implements Consumer<AssemblyMessage>, CustomAssem
     @CheckForNull
     Symbol getMnemonicSymbolByName(@Nonnull String name) {
         return this.getSymbolByContextAndName(MNEMONIC, name, Mnemonics.SYMBOL_RESOLUTION_FALLBACK);
+    }
+
+    boolean requireNumberOfOperands(int requiredNumberOfOperands) {
+        if (this.numberOfOperands != requiredNumberOfOperands) {
+            this.addWrongNumberOfOperandsErrorMessage();
+        }
+
+        return this.numberOfOperands >= requiredNumberOfOperands;
     }
 
     /**

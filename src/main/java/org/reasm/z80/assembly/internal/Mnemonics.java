@@ -33,6 +33,41 @@ public final class Mnemonics {
 
     }
 
+    public static final String CCF = "CCF";
+    public static final String CPD = "CPD";
+    public static final String CPDR = "CPDR";
+    public static final String CPI = "CPI";
+    public static final String CPIR = "CPIR";
+    public static final String CPL = "CPL";
+    public static final String DAA = "DAA";
+    public static final String DI = "DI";
+    public static final String EI = "EI";
+    public static final String EXX = "EXX";
+    public static final String HALT = "HALT";
+    public static final String IND = "IND";
+    public static final String INDR = "INDR";
+    public static final String INI = "INI";
+    public static final String INIR = "INIR";
+    public static final String LDD = "LDD";
+    public static final String LDDR = "LDDR";
+    public static final String LDI = "LDI";
+    public static final String LDIR = "LDIR";
+    public static final String NEG = "NEG";
+    public static final String NOP = "NOP";
+    public static final String OTDR = "OTDR";
+    public static final String OTIR = "OTIR";
+    public static final String OUTD = "OUTD";
+    public static final String OUTI = "OUTI";
+    public static final String RETI = "RETI";
+    public static final String RETN = "RETN";
+    public static final String RLA = "RLA";
+    public static final String RLCA = "RLCA";
+    public static final String RLD = "RLD";
+    public static final String RRA = "RRA";
+    public static final String RRCA = "RRCA";
+    public static final String RRD = "RRD";
+    public static final String SCF = "SCF";
+
     public static final String DEPHASE = "DEPHASE";
     public static final String DO = "DO";
     public static final String ELSE = "ELSE";
@@ -63,7 +98,40 @@ public final class Mnemonics {
         final MnemonicMap map = new MnemonicMap();
 
         // Put the instructions in the dispatch map.
-        // TODO
+        map.put(CCF, SimpleInstruction.CCF);
+        map.put(CPD, SimpleLongInstruction.CPD);
+        map.put(CPDR, SimpleLongInstruction.CPDR);
+        map.put(CPI, SimpleLongInstruction.CPI);
+        map.put(CPIR, SimpleLongInstruction.CPIR);
+        map.put(CPL, SimpleInstruction.CPL);
+        map.put(DAA, SimpleInstruction.DAA);
+        map.put(DI, SimpleInstruction.DI);
+        map.put(EI, SimpleInstruction.EI);
+        map.put(EXX, SimpleInstruction.EXX);
+        map.put(HALT, SimpleInstruction.HALT);
+        map.put(IND, SimpleLongInstruction.IND);
+        map.put(INDR, SimpleLongInstruction.INDR);
+        map.put(INI, SimpleLongInstruction.INI);
+        map.put(INIR, SimpleLongInstruction.INIR);
+        map.put(LDD, SimpleLongInstruction.LDD);
+        map.put(LDDR, SimpleLongInstruction.LDDR);
+        map.put(LDI, SimpleLongInstruction.LDI);
+        map.put(LDIR, SimpleLongInstruction.LDIR);
+        map.put(NEG, SimpleLongInstruction.NEG);
+        map.put(NOP, SimpleInstruction.NOP);
+        map.put(OTDR, SimpleLongInstruction.OTDR);
+        map.put(OTIR, SimpleLongInstruction.OTIR);
+        map.put(OUTD, SimpleLongInstruction.OUTD);
+        map.put(OUTI, SimpleLongInstruction.OUTI);
+        map.put(RETI, SimpleLongInstruction.RETI);
+        map.put(RETN, SimpleLongInstruction.RETN);
+        map.put(RLA, SimpleInstruction.RLA);
+        map.put(RLCA, SimpleInstruction.RLCA);
+        map.put(RLD, SimpleLongInstruction.RLD);
+        map.put(RRA, SimpleInstruction.RRA);
+        map.put(RRCA, SimpleInstruction.RRCA);
+        map.put(RRD, SimpleLongInstruction.RRD);
+        map.put(SCF, SimpleInstruction.SCF);
 
         // Put the directives in the dispatch map.
         // TODO
