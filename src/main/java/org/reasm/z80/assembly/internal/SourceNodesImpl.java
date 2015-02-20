@@ -2,9 +2,12 @@ package org.reasm.z80.assembly.internal;
 
 import java.io.IOException;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import org.reasm.AssemblyBuilder;
+import org.reasm.Symbol;
+import org.reasm.messages.UnknownMnemonicErrorMessage;
 import org.reasm.source.SourceNode;
 
 /**
@@ -24,7 +27,15 @@ public final class SourceNodesImpl {
      *             an I/O exception occurred while assembling the directive
      */
     public static void assembleBlockDirectiveLine(@Nonnull AssemblyBuilder builder) throws IOException {
-        throw new RuntimeException("Not implemented");
+        // Get our assembly context for this assembly.
+        final Z80AssemblyContext context = Z80AssemblyContext.getAssemblyContext(builder);
+
+        String mnemonicName = context.mnemonic;
+        if (mnemonicName.startsWith("!")) {
+            mnemonicName = mnemonicName.substring(1);
+        }
+
+        assembleMnemonic(context, Mnemonics.MAP.get(mnemonicName), true);
     }
 
     /**
@@ -66,7 +77,26 @@ public final class SourceNodesImpl {
      *             an I/O exception occurred while assembling the logical line
      */
     public static void assembleLogicalLine(@Nonnull AssemblyBuilder builder) throws IOException {
-        throw new RuntimeException("Not implemented");
+        // Get our assembly context for this assembly.
+        final Z80AssemblyContext context = Z80AssemblyContext.getAssemblyContext(builder);
+
+        if (context.mnemonic != null) {
+            final Symbol mnemonicSymbol;
+            final boolean builtInMnemonic;
+
+            // If the mnemonic starts with !, ignore macros and search only the built-in mnemonics.
+            if (context.mnemonic.startsWith("!")) {
+                mnemonicSymbol = Mnemonics.MAP.get(context.mnemonic.substring(1));
+                builtInMnemonic = true;
+            } else {
+                mnemonicSymbol = context.getMnemonicSymbolByName(context.mnemonic);
+                builtInMnemonic = false;
+            }
+
+            assembleMnemonic(context, mnemonicSymbol, builtInMnemonic);
+        } else {
+            context.defineLabels();
+        }
     }
 
     /**
@@ -137,6 +167,27 @@ public final class SourceNodesImpl {
      */
     public static void assembleWhileBlock(@Nonnull AssemblyBuilder builder) {
         throw new RuntimeException("Not implemented");
+    }
+
+    private static void assembleMnemonic(@Nonnull Z80AssemblyContext context, @CheckForNull Symbol mnemonicSymbol,
+            boolean builtInMnemonic) throws IOException {
+        final Mnemonic mnemonic;
+        if (mnemonicSymbol != null && mnemonicSymbol.getValue() != null) {
+            mnemonic = (Mnemonic) mnemonicSymbol.getValue();
+        } else {
+            mnemonic = null;
+        }
+
+        if (mnemonic != null) {
+            mnemonic.defineLabels(context);
+            mnemonic.assemble(context);
+        } else {
+            if (builtInMnemonic) {
+                context.addMessage(new UnknownMnemonicErrorMessage());
+            }
+
+            context.defineLabels();
+        }
     }
 
     // This class is not meant to be instantiated.

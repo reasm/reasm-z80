@@ -7,6 +7,7 @@ import java.util.TreeMap;
 import javax.annotation.Nonnull;
 
 import org.reasm.commons.source.BlockDirective;
+import org.reasm.z80.assembly.internal.Mnemonics;
 
 /**
  * Defines the directives recognized as block delimiters by the parser. These directives are recognized in <em>any</em> context.
