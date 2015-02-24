@@ -11,12 +11,14 @@ import org.reasm.commons.source.LogicalLine;
 import org.reasm.commons.source.LogicalLineReader;
 import org.reasm.commons.source.SourceLocationUtils;
 import org.reasm.expressions.EvaluationContext;
+import org.reasm.expressions.SymbolLookup;
 import org.reasm.messages.WrongNumberOfOperandsErrorMessage;
 import org.reasm.source.SourceLocation;
+import org.reasm.z80.expressions.internal.Tokenizer;
 
 import ca.fragag.Consumer;
 
-final class Z80AssemblyContext implements Consumer<AssemblyMessage>, CustomAssemblyData {
+final class Z80AssemblyContext implements Consumer<AssemblyMessage>, CustomAssemblyData, SymbolResolutionFallback {
 
     /**
      * The key for {@link AssemblyBuilder#getCustomAssemblyData(Object)} and
@@ -45,7 +47,7 @@ final class Z80AssemblyContext implements Consumer<AssemblyMessage>, CustomAssem
     }
 
     @Nonnull
-    private final AssemblyBuilder builder;
+    final AssemblyBuilder builder;
 
     // Context of the current logical line being assembled
     // They are assigned in initialize(AssemblyStep)
@@ -64,6 +66,12 @@ final class Z80AssemblyContext implements Consumer<AssemblyMessage>, CustomAssem
     // Reusable objects
     @Nonnull
     final LogicalLineReader logicalLineReader = new LogicalLineReader();
+    @Nonnull
+    final Tokenizer tokenizer = new Tokenizer();
+    @Nonnull
+    final EffectiveAddress ea0 = new EffectiveAddress();
+    @Nonnull
+    final EffectiveAddress ea1 = new EffectiveAddress();
 
     private Z80AssemblyContext(@Nonnull AssemblyBuilder builder) {
         this.builder = builder;
@@ -76,6 +84,12 @@ final class Z80AssemblyContext implements Consumer<AssemblyMessage>, CustomAssem
 
     @Override
     public void completed() {
+    }
+
+    @Override
+    public Symbol resolve(SymbolReference symbolReference) {
+        // TODO: built-in symbols (functions, etc.)
+        return null;
     }
 
     @Override
@@ -94,6 +108,16 @@ final class Z80AssemblyContext implements Consumer<AssemblyMessage>, CustomAssem
         this.builder.appendAssembledData(by);
     }
 
+    void appendWord(short word) throws IOException {
+        this.builder.appendAssembledData((byte) word);
+        this.builder.appendAssembledData((byte) (word >>> 8));
+    }
+
+    @Nonnull
+    SymbolLookup createSymbolLookup() {
+        return new Z80SymbolLookup(this, this.builder.getAssembly().getCurrentSymbolLookupContext());
+    }
+
     /**
      * Defines all the labels on the logical line of the current assembly step with the current program counter as their value.
      */
@@ -107,6 +131,12 @@ final class Z80AssemblyContext implements Consumer<AssemblyMessage>, CustomAssem
     <TValue> void defineSymbol(@Nonnull SymbolContext<TValue> symbolContext, @Nonnull String symbolName,
             @Nonnull SymbolType symbolType, @CheckForNull TValue value) {
         this.builder.defineSymbol(symbolContext, symbolName, false, symbolType, value);
+    }
+
+    void getEffectiveAddress(int operandIndex, @Nonnull EffectiveAddress ea) {
+        this.tokenizer.setCharSequence(this.getOperandText(operandIndex));
+        EffectiveAddress.getEffectiveAddress(this.tokenizer, this.createSymbolLookup(), this.getEvaluationContext(), this.encoding,
+                this, ea);
     }
 
     @Nonnull
@@ -156,6 +186,11 @@ final class Z80AssemblyContext implements Consumer<AssemblyMessage>, CustomAssem
         }
 
         this.logicalLineReader.setRange(this.sourceLocation, mnemonicBounds);
+        return this.logicalLineReader.readToString();
+    }
+
+    private String getOperandText(int operandIndex) {
+        this.logicalLineReader.setRange(this.sourceLocation, this.logicalLine.getOperandBounds(operandIndex));
         return this.logicalLineReader.readToString();
     }
 

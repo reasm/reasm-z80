@@ -22,6 +22,7 @@ import org.reasm.Configuration;
 import org.reasm.Environment;
 import org.reasm.FileFetcher;
 import org.reasm.UserSymbol;
+import org.reasm.commons.messages.AddressingModeNotAllowedHereErrorMessage;
 import org.reasm.messages.UnresolvedSymbolReferenceErrorMessage;
 import org.reasm.messages.WrongNumberOfOperandsErrorMessage;
 import org.reasm.source.SourceFile;
@@ -41,6 +42,8 @@ public abstract class BaseProgramsTest {
     @Nonnull
     static final UserSymbolMatcher<?>[] NO_SYMBOLS = new UserSymbolMatcher[0];
 
+    @Nonnull
+    static final AssemblyMessage ADDRESSING_MODE_NOT_ALLOWED_HERE = new AddressingModeNotAllowedHereErrorMessage();
     @Nonnull
     static final AssemblyMessage WRONG_NUMBER_OF_OPERANDS = new WrongNumberOfOperandsErrorMessage();
     @Nonnull
