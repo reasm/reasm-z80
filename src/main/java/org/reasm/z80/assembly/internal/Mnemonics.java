@@ -59,6 +59,8 @@ public final class Mnemonics {
     public static final String OTIR = "OTIR";
     public static final String OUTD = "OUTD";
     public static final String OUTI = "OUTI";
+    public static final String POP = "POP";
+    public static final String PUSH = "PUSH";
     public static final String RETI = "RETI";
     public static final String RETN = "RETN";
     public static final String RLA = "RLA";
@@ -125,6 +127,8 @@ public final class Mnemonics {
         map.put(OTIR, SimpleLongInstruction.OTIR);
         map.put(OUTD, SimpleLongInstruction.OUTD);
         map.put(OUTI, SimpleLongInstruction.OUTI);
+        map.put(POP, PushPopInstruction.POP);
+        map.put(PUSH, PushPopInstruction.PUSH);
         map.put(RETI, SimpleLongInstruction.RETI);
         map.put(RETN, SimpleLongInstruction.RETN);
         map.put(RLA, SimpleInstruction.RLA);

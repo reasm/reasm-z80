@@ -277,6 +277,21 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" OUTI", new byte[] { (byte) 0xED, (byte) 0xA3 });
         // --> see NOP for more tests
 
+        // POP
+        addDataItem(" POP BC", new byte[] { (byte) 0xC1 });
+        // --> see PUSH for more tests
+
+        // PUSH
+        addDataItem(" PUSH", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" PUSH BC", new byte[] { (byte) 0xC5 });
+        addDataItem(" PUSH DE", new byte[] { (byte) 0xD5 });
+        addDataItem(" PUSH HL", new byte[] { (byte) 0xE5 });
+        addDataItem(" PUSH AF", new byte[] { (byte) 0xF5 });
+        addDataItem(" PUSH IX", new byte[] { (byte) 0xDD, (byte) 0xE5 });
+        addDataItem(" PUSH IY", new byte[] { (byte) 0xFD, (byte) 0xE5 });
+        addDataItem(" PUSH SP", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" PUSH BC,DE", new byte[] { (byte) 0xC5 }, WRONG_NUMBER_OF_OPERANDS);
+
         // RETI
         addDataItem(" RETI", new byte[] { (byte) 0xED, 0x4D });
         // --> see NOP for more tests
