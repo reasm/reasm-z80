@@ -63,6 +63,24 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" EI", new byte[] { (byte) 0xFB });
         // --> see NOP for more tests
 
+        // EX
+        addDataItem(" EX", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" EX DE", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" EX DE, HL", new byte[] { (byte) 0xEB });
+        addDataItem(" EX AF, AF'", new byte[] { 0x08 });
+        addDataItem(" EX (SP), HL", new byte[] { (byte) 0xE3 });
+        addDataItem(" EX (SP), IX", new byte[] { (byte) 0xDD, (byte) 0xE3 });
+        addDataItem(" EX (SP), IY", new byte[] { (byte) 0xFD, (byte) 0xE3 });
+        addDataItem(" EX DE, SP", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" EX AF, HL", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" EX (SP), DE", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" EX HL, DE", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" EX AF', AF", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" EX HL, (SP)", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" EX IX, (SP)", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" EX IY, (SP)", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" EX DE, HL, HL", new byte[] { (byte) 0xEB }, WRONG_NUMBER_OF_OPERANDS);
+
         // EXX
         addDataItem(" EXX", new byte[] { (byte) 0xD9 });
         // --> see NOP for more tests

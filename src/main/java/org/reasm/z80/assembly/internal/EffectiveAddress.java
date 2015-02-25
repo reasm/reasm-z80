@@ -68,6 +68,7 @@ final class EffectiveAddress {
         map.put("HL", AddressingMode.REGISTER_HL_INDIRECT);
         map.put("BC", AddressingMode.REGISTER_BC_INDIRECT);
         map.put("DE", AddressingMode.REGISTER_DE_INDIRECT);
+        map.put("SP", AddressingMode.REGISTER_SP_INDIRECT);
         map.put("IX", AddressingMode.REGISTER_IX_INDIRECT);
         map.put("IY", AddressingMode.REGISTER_IY_INDIRECT);
         map.put("C", AddressingMode.REGISTER_C_INDIRECT);

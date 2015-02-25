@@ -42,6 +42,7 @@ public final class Mnemonics {
     public static final String DAA = "DAA";
     public static final String DI = "DI";
     public static final String EI = "EI";
+    public static final String EX = "EX";
     public static final String EXX = "EXX";
     public static final String HALT = "HALT";
     public static final String IND = "IND";
@@ -110,6 +111,7 @@ public final class Mnemonics {
         map.put(DAA, SimpleInstruction.DAA);
         map.put(DI, SimpleInstruction.DI);
         map.put(EI, SimpleInstruction.EI);
+        map.put(EX, ExInstruction.EX);
         map.put(EXX, SimpleInstruction.EXX);
         map.put(HALT, SimpleInstruction.HALT);
         map.put(IND, SimpleLongInstruction.IND);

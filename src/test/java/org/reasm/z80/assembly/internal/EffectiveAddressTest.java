@@ -63,6 +63,7 @@ public class EffectiveAddressTest {
         addDataItem("SP", AddressingMode.REGISTER_SP);
         addDataItem("(BC)", AddressingMode.REGISTER_BC_INDIRECT);
         addDataItem("(DE)", AddressingMode.REGISTER_DE_INDIRECT);
+        addDataItem("(SP)", AddressingMode.REGISTER_SP_INDIRECT);
         addDataItem("IX", AddressingMode.REGISTER_IX);
         addDataItem("IY", AddressingMode.REGISTER_IY);
         addDataItem("(IX)", AddressingMode.REGISTER_IX_INDIRECT);

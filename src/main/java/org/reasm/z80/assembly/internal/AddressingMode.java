@@ -52,6 +52,9 @@ enum AddressingMode {
     // (DE)
     REGISTER_DE_INDIRECT,
 
+    // (SP)
+    REGISTER_SP_INDIRECT,
+
     // IX
     REGISTER_IX(AddressingMode.IX),
 
