@@ -64,6 +64,12 @@ class LdInstruction extends Mnemonic {
                 context.appendByte((byte) addressingMode1.value);
                 context.appendByte((byte) (0b01_000_110 | addressingMode0.value << 3));
                 context.appendByte(ea1.displacement);
+
+                if (addressingMode0 == AddressingMode.REGISTER_HL_INDIRECT) {
+                    // LD (HL), (IX+d) and LD (HL), (IY+d) are not valid.
+                    context.addMessage(new AddressingModeNotAllowedHereErrorMessage());
+                }
+
                 return;
             }
 
@@ -83,6 +89,12 @@ class LdInstruction extends Mnemonic {
                 context.appendByte((byte) addressingMode0.value);
                 context.appendByte((byte) (0b01_110_000 | addressingMode1.value));
                 context.appendByte(ea0.displacement);
+
+                if (addressingMode1 == AddressingMode.REGISTER_HL_INDIRECT) {
+                    // LD (IX+d), (HL) and LD (IY+d), (HL) are not valid.
+                    context.addMessage(new AddressingModeNotAllowedHereErrorMessage());
+                }
+
                 return;
             }
 

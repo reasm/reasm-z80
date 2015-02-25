@@ -217,6 +217,10 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" LD", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
         addDataItem(" LD B", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
         addDataItem(" LD (HL),(HL)", new byte[] { 0x76 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" LD (HL),(IX+12h)", new byte[] { (byte) 0xDD, 0x76, 0x12 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" LD (HL),(IY+12h)", new byte[] { (byte) 0xFD, 0x76, 0x12 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" LD (IX+12h),(HL)", new byte[] { (byte) 0xDD, 0x76, 0x12 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" LD (IY+12h),(HL)", new byte[] { (byte) 0xFD, 0x76, 0x12 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
         addDataItem(" LD (IX+12h),HL", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
         addDataItem(" LD (BC),HL", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
         addDataItem(" LD (DE),HL", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
