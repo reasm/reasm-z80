@@ -44,11 +44,13 @@ public final class Mnemonics {
     public static final String CPIR = "CPIR";
     public static final String CPL = "CPL";
     public static final String DAA = "DAA";
+    public static final String DEC = "DEC";
     public static final String DI = "DI";
     public static final String EI = "EI";
     public static final String EX = "EX";
     public static final String EXX = "EXX";
     public static final String HALT = "HALT";
+    public static final String INC = "INC";
     public static final String IND = "IND";
     public static final String INDR = "INDR";
     public static final String INI = "INI";
@@ -121,11 +123,13 @@ public final class Mnemonics {
         map.put(CPIR, SimpleLongInstruction.CPIR);
         map.put(CPL, SimpleInstruction.CPL);
         map.put(DAA, SimpleInstruction.DAA);
+        map.put(DEC, IncDecInstruction.DEC);
         map.put(DI, SimpleInstruction.DI);
         map.put(EI, SimpleInstruction.EI);
         map.put(EX, ExInstruction.EX);
         map.put(EXX, SimpleInstruction.EXX);
         map.put(HALT, SimpleInstruction.HALT);
+        map.put(INC, IncDecInstruction.INC);
         map.put(IND, SimpleLongInstruction.IND);
         map.put(INDR, SimpleLongInstruction.INDR);
         map.put(INI, SimpleLongInstruction.INI);

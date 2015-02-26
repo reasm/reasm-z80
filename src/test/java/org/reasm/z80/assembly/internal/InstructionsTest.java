@@ -134,6 +134,11 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" DAA", new byte[] { 0x27 });
         // --> see NOP for more tests
 
+        // DEC
+        addDataItem(" DEC B", new byte[] { 0x05 });
+        addDataItem(" DEC BC", new byte[] { 0x0B });
+        // --> see INC for more tests
+
         // DI
         addDataItem(" DI", new byte[] { (byte) 0xF3 });
         // --> see NOP for more tests
@@ -167,6 +172,31 @@ public class InstructionsTest extends BaseProgramsTest {
         // HALT
         addDataItem(" HALT", new byte[] { 0x76 });
         // --> see NOP for more tests
+
+        // INC
+        // - INC r
+        addDataItem(" INC B", new byte[] { 0x04 });
+        addDataItem(" INC A", new byte[] { 0x3C });
+        // - INC (HL)
+        addDataItem(" INC (HL)", new byte[] { 0x34 });
+        // - INC (IX+d)
+        addDataItem(" INC (IX+12h)", new byte[] { (byte) 0xDD, 0x34, 0x12 });
+        // - INC (IY+d)
+        addDataItem(" INC (IY+12h)", new byte[] { (byte) 0xFD, 0x34, 0x12 });
+        // - INC ss
+        addDataItem(" INC BC", new byte[] { 0x03 });
+        addDataItem(" INC DE", new byte[] { 0x13 });
+        addDataItem(" INC HL", new byte[] { 0x23 });
+        addDataItem(" INC SP", new byte[] { 0x33 });
+        // - INC IX
+        addDataItem(" INC IX", new byte[] { (byte) 0xDD, 0x23 });
+        // - INC IY
+        addDataItem(" INC IY", new byte[] { (byte) 0xFD, 0x23 });
+        // - invalid forms
+        addDataItem(" INC", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" INC B,C", new byte[] { 0x04 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" INC 23h", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" INC (1234h)", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
 
         // IND
         addDataItem(" IND", new byte[] { (byte) 0xED, (byte) 0xAA });
