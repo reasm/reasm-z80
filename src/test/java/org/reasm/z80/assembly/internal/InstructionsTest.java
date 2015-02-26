@@ -27,9 +27,88 @@ public class InstructionsTest extends BaseProgramsTest {
     private static final ArrayList<Object[]> TEST_DATA = new ArrayList<>();
 
     static {
+        // ADC
+        // - ADC A, r
+        addDataItem(" ADC A,B", new byte[] { (byte) 0x88 });
+        addDataItem(" ADC A,A", new byte[] { (byte) 0x8F });
+        // - ADC A, n
+        addDataItem(" ADC A,23h", new byte[] { (byte) 0xCE, 0x23 });
+        // - ADC A, (HL)
+        addDataItem(" ADC A,(HL)", new byte[] { (byte) 0x8E });
+        // - ADC A, (IX+d)
+        addDataItem(" ADC A,(IX+12h)", new byte[] { (byte) 0xDD, (byte) 0x8E, 0x12 });
+        // - ADC A, (IY+d)
+        addDataItem(" ADC A,(IY+12h)", new byte[] { (byte) 0xFD, (byte) 0x8E, 0x12 });
+        // - ADC HL, ss
+        addDataItem(" ADC HL,BC", new byte[] { (byte) 0xED, 0x4A });
+        addDataItem(" ADC HL,DE", new byte[] { (byte) 0xED, 0x5A });
+        addDataItem(" ADC HL,HL", new byte[] { (byte) 0xED, 0x6A });
+        addDataItem(" ADC HL,SP", new byte[] { (byte) 0xED, 0x7A });
+        // - invalid forms
+        addDataItem(" ADC", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" ADC A", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" ADC A,B,C", new byte[] { (byte) 0x88 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" ADC A,HL", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" ADC HL,IX", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" ADC HL,IY", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" ADC IX,IX", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" ADC IY,IY", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" ADC B,C", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+
+        // ADD
+        // - ADD A, r
+        addDataItem(" ADD A,B", new byte[] { (byte) 0x80 });
+        addDataItem(" ADD A,A", new byte[] { (byte) 0x87 });
+        // - ADD A, n
+        addDataItem(" ADD A,23h", new byte[] { (byte) 0xC6, 0x23 });
+        // - ADD A, (HL)
+        addDataItem(" ADD A,(HL)", new byte[] { (byte) 0x86 });
+        // - ADD A, (IX+d)
+        addDataItem(" ADD A,(IX+12h)", new byte[] { (byte) 0xDD, (byte) 0x86, 0x12 });
+        // - ADD A, (IY+d)
+        addDataItem(" ADD A,(IY+12h)", new byte[] { (byte) 0xFD, (byte) 0x86, 0x12 });
+        // - ADD HL, ss
+        addDataItem(" ADD HL,BC", new byte[] { 0x09 });
+        addDataItem(" ADD HL,DE", new byte[] { 0x19 });
+        addDataItem(" ADD HL,HL", new byte[] { 0x29 });
+        addDataItem(" ADD HL,SP", new byte[] { 0x39 });
+        // - ADD IX, pp
+        addDataItem(" ADD IX,BC", new byte[] { (byte) 0xDD, 0x09 });
+        addDataItem(" ADD IX,DE", new byte[] { (byte) 0xDD, 0x19 });
+        addDataItem(" ADD IX,IX", new byte[] { (byte) 0xDD, 0x29 });
+        addDataItem(" ADD IX,SP", new byte[] { (byte) 0xDD, 0x39 });
+        // - ADD IY, rr
+        addDataItem(" ADD IY,BC", new byte[] { (byte) 0xFD, 0x09 });
+        addDataItem(" ADD IY,DE", new byte[] { (byte) 0xFD, 0x19 });
+        addDataItem(" ADD IY,IY", new byte[] { (byte) 0xFD, 0x29 });
+        addDataItem(" ADD IY,SP", new byte[] { (byte) 0xFD, 0x39 });
+        // - invalid forms
+        addDataItem(" ADD", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" ADD A", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" ADD A,B,C", new byte[] { (byte) 0x80 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" ADD A,HL", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" ADD HL,(HL)", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" ADD HL,IX", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" ADD HL,IY", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" ADD IX,HL", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" ADD IY,HL", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" ADD IX,IY", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" ADD IY,IX", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" ADD B,C", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+
+        // AND
+        addDataItem(" AND B", new byte[] { (byte) 0xA0 });
+        addDataItem(" AND 23h", new byte[] { (byte) 0xE6, 0x23 });
+        // --> see SUB for more tests
+
         // CCF
         addDataItem(" CCF", new byte[] { 0x3F });
         // --> see NOP for more tests
+
+        // CP
+        addDataItem(" CP B", new byte[] { (byte) 0xB8 });
+        addDataItem(" CP 23h", new byte[] { (byte) 0xFE, 0x23 });
+        // --> see SUB for more tests
 
         // CPD
         addDataItem(" CPD", new byte[] { (byte) 0xED, (byte) 0xA9 });
@@ -279,6 +358,11 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" NOP A,A", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
         addDataItem(" NOP A,A,A", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
 
+        // OR
+        addDataItem(" OR B", new byte[] { (byte) 0xB0 });
+        addDataItem(" OR 23h", new byte[] { (byte) 0xF6, 0x23 });
+        // --> see SUB for more tests
+
         // OTDR
         addDataItem(" OTDR", new byte[] { (byte) 0xED, (byte) 0xBB });
         // --> see NOP for more tests
@@ -342,9 +426,37 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" RRD", new byte[] { (byte) 0xED, 0x67 });
         // --> see NOP for more tests
 
+        // SBC
+        addDataItem(" SBC A,B", new byte[] { (byte) 0x98 });
+        addDataItem(" SBC A,23h", new byte[] { (byte) 0xDE, 0x23 });
+        addDataItem(" SBC HL,BC", new byte[] { (byte) 0xED, 0x42 });
+        // --> see ADC for more tests
+
         // SCF
         addDataItem(" SCF", new byte[] { 0x37 });
         // --> see NOP for more tests
+
+        // SUB
+        // - SUB r
+        addDataItem(" SUB B", new byte[] { (byte) 0x90 });
+        addDataItem(" SUB A", new byte[] { (byte) 0x97 });
+        // - SUB n
+        addDataItem(" SUB 23h", new byte[] { (byte) 0xD6, 0x23 });
+        // - SUB (HL)
+        addDataItem(" SUB (HL)", new byte[] { (byte) 0x96 });
+        // - SUB (IX+d)
+        addDataItem(" SUB (IX+12h)", new byte[] { (byte) 0xDD, (byte) 0x96, 0x12 });
+        // - SUB (IY+d)
+        addDataItem(" SUB (IY+12h)", new byte[] { (byte) 0xFD, (byte) 0x96, 0x12 });
+        // - invalid forms
+        addDataItem(" SUB", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" SUB B,C", new byte[] { (byte) 0x90 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" SUB HL", new byte[] { (byte) 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+
+        // XOR
+        addDataItem(" XOR B", new byte[] { (byte) 0xA8 });
+        addDataItem(" XOR 23h", new byte[] { (byte) 0xEE, 0x23 });
+        // --> see SUB for more tests
     }
 
     /**

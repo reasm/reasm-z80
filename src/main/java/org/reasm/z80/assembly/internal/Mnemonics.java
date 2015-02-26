@@ -33,7 +33,11 @@ public final class Mnemonics {
 
     }
 
+    public static final String ADC = "ADC";
+    public static final String ADD = "ADD";
+    public static final String AND = "AND";
     public static final String CCF = "CCF";
+    public static final String CP = "CP";
     public static final String CPD = "CPD";
     public static final String CPDR = "CPDR";
     public static final String CPI = "CPI";
@@ -56,6 +60,7 @@ public final class Mnemonics {
     public static final String LDIR = "LDIR";
     public static final String NEG = "NEG";
     public static final String NOP = "NOP";
+    public static final String OR = "OR";
     public static final String OTDR = "OTDR";
     public static final String OTIR = "OTIR";
     public static final String OUTD = "OUTD";
@@ -70,7 +75,10 @@ public final class Mnemonics {
     public static final String RRA = "RRA";
     public static final String RRCA = "RRCA";
     public static final String RRD = "RRD";
+    public static final String SBC = "SBC";
     public static final String SCF = "SCF";
+    public static final String SUB = "SUB";
+    public static final String XOR = "XOR";
 
     public static final String DEPHASE = "DEPHASE";
     public static final String DO = "DO";
@@ -102,7 +110,11 @@ public final class Mnemonics {
         final MnemonicMap map = new MnemonicMap();
 
         // Put the instructions in the dispatch map.
+        map.put(ADC, AdcSbcInstruction.ADC);
+        map.put(ADD, AddInstruction.ADD);
+        map.put(AND, BinaryArithmeticLogicalInstruction.AND);
         map.put(CCF, SimpleInstruction.CCF);
+        map.put(CP, BinaryArithmeticLogicalInstruction.CP);
         map.put(CPD, SimpleLongInstruction.CPD);
         map.put(CPDR, SimpleLongInstruction.CPDR);
         map.put(CPI, SimpleLongInstruction.CPI);
@@ -125,6 +137,7 @@ public final class Mnemonics {
         map.put(LDIR, SimpleLongInstruction.LDIR);
         map.put(NEG, SimpleLongInstruction.NEG);
         map.put(NOP, SimpleInstruction.NOP);
+        map.put(OR, BinaryArithmeticLogicalInstruction.OR);
         map.put(OTDR, SimpleLongInstruction.OTDR);
         map.put(OTIR, SimpleLongInstruction.OTIR);
         map.put(OUTD, SimpleLongInstruction.OUTD);
@@ -139,7 +152,10 @@ public final class Mnemonics {
         map.put(RRA, SimpleInstruction.RRA);
         map.put(RRCA, SimpleInstruction.RRCA);
         map.put(RRD, SimpleLongInstruction.RRD);
+        map.put(SBC, AdcSbcInstruction.SBC);
         map.put(SCF, SimpleInstruction.SCF);
+        map.put(SUB, BinaryArithmeticLogicalInstruction.SUB);
+        map.put(XOR, BinaryArithmeticLogicalInstruction.XOR);
 
         // Put the directives in the dispatch map.
         // TODO
