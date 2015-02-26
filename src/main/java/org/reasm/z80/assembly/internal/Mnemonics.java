@@ -36,6 +36,7 @@ public final class Mnemonics {
     public static final String ADC = "ADC";
     public static final String ADD = "ADD";
     public static final String AND = "AND";
+    public static final String BIT = "BIT";
     public static final String CCF = "CCF";
     public static final String CP = "CP";
     public static final String CPD = "CPD";
@@ -70,6 +71,7 @@ public final class Mnemonics {
     public static final String OUTI = "OUTI";
     public static final String POP = "POP";
     public static final String PUSH = "PUSH";
+    public static final String RES = "RES";
     public static final String RETI = "RETI";
     public static final String RETN = "RETN";
     public static final String RL = "RL";
@@ -84,6 +86,7 @@ public final class Mnemonics {
     public static final String RRD = "RRD";
     public static final String SBC = "SBC";
     public static final String SCF = "SCF";
+    public static final String SET = "SET";
     public static final String SLA = "SLA";
     public static final String SRA = "SRA";
     public static final String SRL = "SRL";
@@ -123,6 +126,7 @@ public final class Mnemonics {
         map.put(ADC, AdcSbcInstruction.ADC);
         map.put(ADD, AddInstruction.ADD);
         map.put(AND, BinaryArithmeticLogicalInstruction.AND);
+        map.put(BIT, BitManipulationInstruction.BIT);
         map.put(CCF, SimpleInstruction.CCF);
         map.put(CP, BinaryArithmeticLogicalInstruction.CP);
         map.put(CPD, SimpleLongInstruction.CPD);
@@ -157,6 +161,7 @@ public final class Mnemonics {
         map.put(OUTI, SimpleLongInstruction.OUTI);
         map.put(POP, PushPopInstruction.POP);
         map.put(PUSH, PushPopInstruction.PUSH);
+        map.put(RES, BitManipulationInstruction.RES);
         map.put(RETI, SimpleLongInstruction.RETI);
         map.put(RETN, SimpleLongInstruction.RETN);
         map.put(RL, RotateShiftInstruction.RL);
@@ -171,6 +176,7 @@ public final class Mnemonics {
         map.put(RRD, SimpleLongInstruction.RRD);
         map.put(SBC, AdcSbcInstruction.SBC);
         map.put(SCF, SimpleInstruction.SCF);
+        map.put(SET, BitManipulationInstruction.SET);
         map.put(SLA, RotateShiftInstruction.SLA);
         map.put(SRA, RotateShiftInstruction.SRA);
         map.put(SRL, RotateShiftInstruction.SRL);

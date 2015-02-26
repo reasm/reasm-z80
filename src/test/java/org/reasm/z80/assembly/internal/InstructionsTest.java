@@ -102,6 +102,32 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" AND 23h", new byte[] { (byte) 0xE6, 0x23 });
         // --> see SUB for more tests
 
+        // BIT
+        // - BIT b, r
+        addDataItem(" BIT 0,B", new byte[] { (byte) 0xCB, 0x40 });
+        addDataItem(" BIT 0,A", new byte[] { (byte) 0xCB, 0x47 });
+        addDataItem(" BIT 1,B", new byte[] { (byte) 0xCB, 0x48 });
+        addDataItem(" BIT 2,B", new byte[] { (byte) 0xCB, 0x50 });
+        addDataItem(" BIT 4,B", new byte[] { (byte) 0xCB, 0x60 });
+        addDataItem(" BIT 7,B", new byte[] { (byte) 0xCB, 0x78 });
+        addDataItem(" BIT 8,B", new byte[] { (byte) 0xCB, 0x40 }, new ValueOutOfRangeErrorMessage(8));
+        addDataItem(" BIT -1,B", new byte[] { (byte) 0xCB, 0x78 }, new ValueOutOfRangeErrorMessage(-1));
+        // - BIT b, (HL)
+        addDataItem(" BIT 0,(HL)", new byte[] { (byte) 0xCB, 0x46 });
+        addDataItem(" BIT 7,(HL)", new byte[] { (byte) 0xCB, 0x7E });
+        // - BIT b, (IX+d)
+        addDataItem(" BIT 0,(IX+12h)", new byte[] { (byte) 0xDD, (byte) 0xCB, 0x12, 0x46 });
+        addDataItem(" BIT 7,(IX+12h)", new byte[] { (byte) 0xDD, (byte) 0xCB, 0x12, 0x7E });
+        // - BIT b, (IY+d)
+        addDataItem(" BIT 0,(IY+12h)", new byte[] { (byte) 0xFD, (byte) 0xCB, 0x12, 0x46 });
+        addDataItem(" BIT 7,(IY+12h)", new byte[] { (byte) 0xFD, (byte) 0xCB, 0x12, 0x7E });
+        // - invalid forms
+        addDataItem(" BIT", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" BIT 0", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" BIT 0,B,B", new byte[] { (byte) 0xCB, 0x40 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" BIT 0,HL", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" BIT B,B", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+
         // CCF
         addDataItem(" CCF", new byte[] { 0x3F });
         // --> see NOP for more tests
@@ -434,6 +460,10 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" PUSH SP", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
         addDataItem(" PUSH BC,DE", new byte[] { (byte) 0xC5 }, WRONG_NUMBER_OF_OPERANDS);
 
+        // RES
+        addDataItem(" RES 0,B", new byte[] { (byte) 0xCB, (byte) 0x80 });
+        // --> see BIT for more tests
+
         // RETI
         addDataItem(" RETI", new byte[] { (byte) 0xED, 0x4D });
         // --> see NOP for more tests
@@ -502,6 +532,10 @@ public class InstructionsTest extends BaseProgramsTest {
         // SCF
         addDataItem(" SCF", new byte[] { 0x37 });
         // --> see NOP for more tests
+
+        // SET
+        addDataItem(" SET 0,B", new byte[] { (byte) 0xCB, (byte) 0xC0 });
+        // --> see BIT for more tests
 
         // SLA
         addDataItem(" SLA B", new byte[] { (byte) 0xCB, 0x20 });
