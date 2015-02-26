@@ -52,6 +52,11 @@ abstract class Mnemonic {
             }
 
             @Override
+            public Byte visitUndetermined() {
+                return 0;
+            }
+
+            @Override
             public Byte visitUnsignedInt(long value) {
                 if (value < -0x80 || value > 0xFF) {
                     this.assemblyMessageConsumer.accept(new ValueOutOfRangeErrorMessage(value));
@@ -67,6 +72,11 @@ abstract class Mnemonic {
             @Override
             public Short visitString(String value) {
                 return (short) stringToInt(value, context.encoding, 2, this.assemblyMessageConsumer);
+            }
+
+            @Override
+            public Short visitUndetermined() {
+                return 0;
             }
 
             @Override

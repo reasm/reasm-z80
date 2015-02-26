@@ -31,17 +31,12 @@ abstract class IntegerValueVisitor<T> implements ValueVisitor<T> {
     @Override
     public T visitFunction(Function value) {
         this.assemblyMessageConsumer.accept(new FunctionCannotBeConvertedToIntegerErrorMessage());
-        return null;
+        return this.visitUndetermined();
     }
 
     @Override
     public T visitSignedInt(long value) {
         return this.visitUnsignedInt(value);
-    }
-
-    @Override
-    public T visitUndetermined() {
-        return null;
     }
 
 }

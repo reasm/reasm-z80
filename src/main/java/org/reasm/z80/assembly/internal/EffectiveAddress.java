@@ -147,7 +147,7 @@ final class EffectiveAddress {
 
     private static byte getDisplacement(@CheckForNull Value value, final boolean negate, @Nonnull final Charset encoding,
             @Nonnull Consumer<AssemblyMessage> assemblyMessageConsumer) {
-        final Byte displacement = Value.accept(value, new IntegerValueVisitor<Byte>(assemblyMessageConsumer) {
+        return Value.accept(value, new IntegerValueVisitor<Byte>(assemblyMessageConsumer) {
             @Override
             public Byte visitString(String value) {
                 int intValue = Mnemonic.stringToInt(value, encoding, 1, this.assemblyMessageConsumer);
@@ -156,6 +156,11 @@ final class EffectiveAddress {
                 }
 
                 return (byte) intValue;
+            }
+
+            @Override
+            public Byte visitUndetermined() {
+                return 0;
             }
 
             @Override
@@ -174,12 +179,6 @@ final class EffectiveAddress {
                 return (byte) shortValue;
             }
         });
-
-        if (displacement != null) {
-            return displacement;
-        }
-
-        return 0;
     }
 
     AddressingMode addressingMode;
