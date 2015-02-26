@@ -6,8 +6,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
-import org.reasm.commons.messages.AddressingModeNotAllowedHereErrorMessage;
-
 import com.google.common.collect.ImmutableList;
 
 /**
@@ -91,8 +89,7 @@ class AddInstruction extends Mnemonic {
             break;
         }
 
-        context.appendByte((byte) 0x00);
-        context.addMessage(new AddressingModeNotAllowedHereErrorMessage());
+        context.addressingModeNotAllowed();
     }
 
 }

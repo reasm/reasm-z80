@@ -5,8 +5,6 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
-import org.reasm.commons.messages.AddressingModeNotAllowedHereErrorMessage;
-
 /**
  * The <code>ADD</code>, <code>ADC</code>, <code>SUB</code>, <code>SBC</code>, <code>AND</code>, <code>XOR</code>, <code>OR</code>
  * and <code>CP</code> instructions.
@@ -54,8 +52,7 @@ class BinaryArithmeticLogicalInstruction extends Mnemonic {
             return;
         }
 
-        context.appendByte((byte) 0x00);
-        context.addMessage(new AddressingModeNotAllowedHereErrorMessage());
+        context.addressingModeNotAllowed();
     }
 
     boolean assembleCommonOrIndexedOrImmediate(@Nonnull Z80AssemblyContext context, @Nonnull EffectiveAddress ea)

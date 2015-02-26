@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.reasm.commons.messages.AddressingModeNotAllowedHereErrorMessage;
-
 import com.google.common.collect.ImmutableList;
 
 /**
@@ -52,7 +50,7 @@ class LdInstruction extends Mnemonic {
                 if (addressingMode0 == AddressingMode.REGISTER_HL_INDIRECT
                         && addressingMode1 == AddressingMode.REGISTER_HL_INDIRECT) {
                     // LD (HL), (HL) is not valid. (HALT takes its opcode.)
-                    context.addMessage(new AddressingModeNotAllowedHereErrorMessage());
+                    context.addAddressingModeNotAllowedHereErrorMessage();
                 }
 
                 return;
@@ -67,7 +65,7 @@ class LdInstruction extends Mnemonic {
 
                 if (addressingMode0 == AddressingMode.REGISTER_HL_INDIRECT) {
                     // LD (HL), (IX+d) and LD (HL), (IY+d) are not valid.
-                    context.addMessage(new AddressingModeNotAllowedHereErrorMessage());
+                    context.addAddressingModeNotAllowedHereErrorMessage();
                 }
 
                 return;
@@ -92,7 +90,7 @@ class LdInstruction extends Mnemonic {
 
                 if (addressingMode1 == AddressingMode.REGISTER_HL_INDIRECT) {
                     // LD (IX+d), (HL) and LD (IY+d), (HL) are not valid.
-                    context.addMessage(new AddressingModeNotAllowedHereErrorMessage());
+                    context.addAddressingModeNotAllowedHereErrorMessage();
                 }
 
                 return;
@@ -268,8 +266,7 @@ class LdInstruction extends Mnemonic {
             }
         }
 
-        context.appendByte((byte) 0x00);
-        context.addMessage(new AddressingModeNotAllowedHereErrorMessage());
+        context.addressingModeNotAllowed();
     }
 
 }

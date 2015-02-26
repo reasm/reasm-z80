@@ -5,8 +5,6 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
-import org.reasm.commons.messages.AddressingModeNotAllowedHereErrorMessage;
-
 /**
  * The <code>EX</code> instruction.
  *
@@ -74,8 +72,7 @@ class ExInstruction extends Mnemonic {
             break;
         }
 
-        context.appendByte((byte) 0x00);
-        context.addMessage(new AddressingModeNotAllowedHereErrorMessage());
+        context.addressingModeNotAllowed();
     }
 
 }

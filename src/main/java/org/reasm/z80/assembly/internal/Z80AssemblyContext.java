@@ -7,6 +7,7 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import org.reasm.*;
+import org.reasm.commons.messages.AddressingModeNotAllowedHereErrorMessage;
 import org.reasm.commons.source.LogicalLine;
 import org.reasm.commons.source.LogicalLineReader;
 import org.reasm.commons.source.SourceLocationUtils;
@@ -96,8 +97,17 @@ final class Z80AssemblyContext implements Consumer<AssemblyMessage>, CustomAssem
     public void startedNewPass() {
     }
 
+    void addAddressingModeNotAllowedHereErrorMessage() {
+        this.addMessage(new AddressingModeNotAllowedHereErrorMessage());
+    }
+
     void addMessage(@Nonnull AssemblyMessage message) {
         this.builder.addMessage(message);
+    }
+
+    void addressingModeNotAllowed() throws IOException {
+        this.appendByte((byte) 0x00);
+        this.addAddressingModeNotAllowedHereErrorMessage();
     }
 
     void addTentativeMessage(@Nonnull AssemblyMessage message) {
