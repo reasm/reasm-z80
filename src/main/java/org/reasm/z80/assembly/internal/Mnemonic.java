@@ -23,7 +23,7 @@ import ca.fragag.Consumer;
 @Immutable
 abstract class Mnemonic {
 
-    static int stringToInt(@Nonnull String value, @Nonnull Charset encoding, int maxLength,
+    static long stringToInt(@Nonnull String value, @Nonnull Charset encoding, int maxLength,
             @Nonnull Consumer<AssemblyMessage> assemblyMessageConsumer) {
         final ByteBuffer stringBytes = encoding.encode(value);
 
@@ -35,7 +35,7 @@ abstract class Mnemonic {
             maxLength = stringBytes.limit();
         }
 
-        int result = 0;
+        long result = 0;
         for (; maxLength != 0; maxLength--) {
             result <<= 8;
             result |= stringBytes.get() & 0xFF;
@@ -63,6 +63,48 @@ abstract class Mnemonic {
                 }
 
                 return (byte) value;
+            }
+        });
+    }
+
+    static int valueToDword(@Nonnull Value value, @Nonnull final Z80AssemblyContext context) {
+        return Value.accept(value, new IntegerValueVisitor<Integer>(context) {
+            @Override
+            public Integer visitString(String value) {
+                return (int) stringToInt(value, context.encoding, 4, this.assemblyMessageConsumer);
+            }
+
+            @Override
+            public Integer visitUndetermined() {
+                return 0;
+            }
+
+            @Override
+            public Integer visitUnsignedInt(long value) {
+                if (value < -0x80000000 || value > 0xFFFFFFFF) {
+                    this.assemblyMessageConsumer.accept(new ValueOutOfRangeErrorMessage(value));
+                }
+
+                return (int) value;
+            }
+        });
+    }
+
+    static long valueToQword(@Nonnull Value value, @Nonnull final Z80AssemblyContext context) {
+        return Value.accept(value, new IntegerValueVisitor<Long>(context) {
+            @Override
+            public Long visitString(String value) {
+                return stringToInt(value, context.encoding, 8, this.assemblyMessageConsumer);
+            }
+
+            @Override
+            public Long visitUndetermined() {
+                return 0L;
+            }
+
+            @Override
+            public Long visitUnsignedInt(long value) {
+                return value;
             }
         });
     }

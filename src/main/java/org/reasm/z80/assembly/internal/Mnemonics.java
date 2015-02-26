@@ -50,6 +50,7 @@ public final class Mnemonics {
     public static final String EX = "EX";
     public static final String EXX = "EXX";
     public static final String HALT = "HALT";
+    public static final String IM = "IM";
     public static final String INC = "INC";
     public static final String IND = "IND";
     public static final String INDR = "INDR";
@@ -129,6 +130,7 @@ public final class Mnemonics {
         map.put(EX, ExInstruction.EX);
         map.put(EXX, SimpleInstruction.EXX);
         map.put(HALT, SimpleInstruction.HALT);
+        map.put(IM, ImInstruction.IM);
         map.put(INC, IncDecInstruction.INC);
         map.put(IND, SimpleLongInstruction.IND);
         map.put(INDR, SimpleLongInstruction.INDR);

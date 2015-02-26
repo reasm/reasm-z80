@@ -100,6 +100,10 @@ final class Z80AssemblyContext implements Consumer<AssemblyMessage>, CustomAssem
         this.builder.addMessage(message);
     }
 
+    void addTentativeMessage(@Nonnull AssemblyMessage message) {
+        this.builder.addTentativeMessage(message);
+    }
+
     void addWrongNumberOfOperandsErrorMessage() {
         this.addMessage(new WrongNumberOfOperandsErrorMessage());
     }

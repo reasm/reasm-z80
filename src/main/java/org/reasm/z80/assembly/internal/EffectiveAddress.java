@@ -150,7 +150,7 @@ final class EffectiveAddress {
         return Value.accept(value, new IntegerValueVisitor<Byte>(assemblyMessageConsumer) {
             @Override
             public Byte visitString(String value) {
-                int intValue = Mnemonic.stringToInt(value, encoding, 1, this.assemblyMessageConsumer);
+                long intValue = Mnemonic.stringToInt(value, encoding, 1, this.assemblyMessageConsumer);
                 if (negate) {
                     intValue = -intValue;
                 }

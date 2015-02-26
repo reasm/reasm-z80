@@ -11,6 +11,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.reasm.AssemblyMessage;
 import org.reasm.commons.messages.ValueOutOfRangeErrorMessage;
+import org.reasm.z80.messages.InvalidImmediateModeErrorMessage;
 
 /**
  * Test class for all Z80 family instructions.
@@ -172,6 +173,15 @@ public class InstructionsTest extends BaseProgramsTest {
         // HALT
         addDataItem(" HALT", new byte[] { 0x76 });
         // --> see NOP for more tests
+
+        // IM
+        addDataItem(" IM", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" IM 0", new byte[] { (byte) 0xED, 0x46 });
+        addDataItem(" IM 1", new byte[] { (byte) 0xED, 0x56 });
+        addDataItem(" IM 2", new byte[] { (byte) 0xED, 0x5E });
+        addDataItem(" IM 3", new byte[] { (byte) 0xED, 0x46 }, new InvalidImmediateModeErrorMessage());
+        addDataItem(" IM 0,0", new byte[] { (byte) 0xED, 0x46 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" IM A", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
 
         // INC
         // - INC r
