@@ -442,9 +442,28 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" RETN", new byte[] { (byte) 0xED, 0x45 });
         // --> see NOP for more tests
 
+        // RL
+        addDataItem(" RL B", new byte[] { (byte) 0xCB, 0x10 });
+        // --> see RLC for more tests
+
         // RLA
         addDataItem(" RLA", new byte[] { 0x17 });
         // --> see NOP for more tests
+
+        // RLC
+        // - RLC r
+        addDataItem(" RLC B", new byte[] { (byte) 0xCB, 0x00 });
+        addDataItem(" RLC A", new byte[] { (byte) 0xCB, 0x07 });
+        // - RLC (HL)
+        addDataItem(" RLC (HL)", new byte[] { (byte) 0xCB, 0x06 });
+        // - RLC (IX+d)
+        addDataItem(" RLC (IX+12h)", new byte[] { (byte) 0xDD, (byte) 0xCB, 0x12, 0x06 });
+        // - RLC (IY+d)
+        addDataItem(" RLC (IY+12h)", new byte[] { (byte) 0xFD, (byte) 0xCB, 0x12, 0x06 });
+        // - invalid forms
+        addDataItem(" RLC", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" RLC B,B", new byte[] { (byte) 0xCB, 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" RLC HL", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
 
         // RLCA
         addDataItem(" RLCA", new byte[] { 0x07 });
@@ -454,9 +473,17 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" RLD", new byte[] { (byte) 0xED, 0x6F });
         // --> see NOP for more tests
 
+        // RR
+        addDataItem(" RR B", new byte[] { (byte) 0xCB, 0x18 });
+        // --> see RLC for more tests
+
         // RRA
         addDataItem(" RRA", new byte[] { 0x1F });
         // --> see NOP for more tests
+
+        // RRC
+        addDataItem(" RRC B", new byte[] { (byte) 0xCB, 0x08 });
+        // --> see RLC for more tests
 
         // RRCA
         addDataItem(" RRCA", new byte[] { 0x0F });
@@ -475,6 +502,18 @@ public class InstructionsTest extends BaseProgramsTest {
         // SCF
         addDataItem(" SCF", new byte[] { 0x37 });
         // --> see NOP for more tests
+
+        // SLA
+        addDataItem(" SLA B", new byte[] { (byte) 0xCB, 0x20 });
+        // --> see RLC for more tests
+
+        // SRA
+        addDataItem(" SRA B", new byte[] { (byte) 0xCB, 0x28 });
+        // --> see RLC for more tests
+
+        // SRL
+        addDataItem(" SRL B", new byte[] { (byte) 0xCB, 0x38 });
+        // --> see RLC for more tests
 
         // SUB
         // - SUB r

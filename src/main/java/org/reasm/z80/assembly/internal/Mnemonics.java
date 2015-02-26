@@ -72,14 +72,21 @@ public final class Mnemonics {
     public static final String PUSH = "PUSH";
     public static final String RETI = "RETI";
     public static final String RETN = "RETN";
+    public static final String RL = "RL";
     public static final String RLA = "RLA";
+    public static final String RLC = "RLC";
     public static final String RLCA = "RLCA";
     public static final String RLD = "RLD";
+    public static final String RR = "RR";
     public static final String RRA = "RRA";
+    public static final String RRC = "RRC";
     public static final String RRCA = "RRCA";
     public static final String RRD = "RRD";
     public static final String SBC = "SBC";
     public static final String SCF = "SCF";
+    public static final String SLA = "SLA";
+    public static final String SRA = "SRA";
+    public static final String SRL = "SRL";
     public static final String SUB = "SUB";
     public static final String XOR = "XOR";
 
@@ -152,14 +159,21 @@ public final class Mnemonics {
         map.put(PUSH, PushPopInstruction.PUSH);
         map.put(RETI, SimpleLongInstruction.RETI);
         map.put(RETN, SimpleLongInstruction.RETN);
+        map.put(RL, RotateShiftInstruction.RL);
         map.put(RLA, SimpleInstruction.RLA);
+        map.put(RLC, RotateShiftInstruction.RLC);
         map.put(RLCA, SimpleInstruction.RLCA);
         map.put(RLD, SimpleLongInstruction.RLD);
+        map.put(RR, RotateShiftInstruction.RR);
         map.put(RRA, SimpleInstruction.RRA);
+        map.put(RRC, RotateShiftInstruction.RRC);
         map.put(RRCA, SimpleInstruction.RRCA);
         map.put(RRD, SimpleLongInstruction.RRD);
         map.put(SBC, AdcSbcInstruction.SBC);
         map.put(SCF, SimpleInstruction.SCF);
+        map.put(SLA, RotateShiftInstruction.SLA);
+        map.put(SRA, RotateShiftInstruction.SRA);
+        map.put(SRL, RotateShiftInstruction.SRL);
         map.put(SUB, BinaryArithmeticLogicalInstruction.SUB);
         map.put(XOR, BinaryArithmeticLogicalInstruction.XOR);
 
