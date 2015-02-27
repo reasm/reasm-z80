@@ -57,6 +57,7 @@ public final class Mnemonics {
     public static final String INDR = "INDR";
     public static final String INI = "INI";
     public static final String INIR = "INIR";
+    public static final String JP = "JP";
     public static final String LD = "LD";
     public static final String LDD = "LDD";
     public static final String LDDR = "LDDR";
@@ -147,6 +148,7 @@ public final class Mnemonics {
         map.put(INDR, SimpleLongInstruction.INDR);
         map.put(INI, SimpleLongInstruction.INI);
         map.put(INIR, SimpleLongInstruction.INIR);
+        map.put(JP, JpInstruction.JP);
         map.put(LD, LdInstruction.LD);
         map.put(LDD, SimpleLongInstruction.LDD);
         map.put(LDDR, SimpleLongInstruction.LDDR);

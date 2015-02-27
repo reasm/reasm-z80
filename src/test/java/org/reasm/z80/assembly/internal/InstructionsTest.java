@@ -11,6 +11,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.reasm.AssemblyMessage;
 import org.reasm.commons.messages.ValueOutOfRangeErrorMessage;
+import org.reasm.z80.messages.InvalidConditionErrorMessage;
 import org.reasm.z80.messages.InvalidImmediateModeErrorMessage;
 
 /**
@@ -249,6 +250,40 @@ public class InstructionsTest extends BaseProgramsTest {
         // INIR
         addDataItem(" INIR", new byte[] { (byte) 0xED, (byte) 0xB2 });
         // --> see NOP for more tests
+
+        // JP
+        // - JP nn
+        addDataItem(" JP 0", new byte[] { (byte) 0xC3, 0x00, 0x00 });
+        addDataItem(" JP 1234h", new byte[] { (byte) 0xC3, 0x34, 0x12 });
+        addDataItem(" JP 0FFFFh", new byte[] { (byte) 0xC3, (byte) 0xFF, (byte) 0xFF });
+        addDataItem(" JP 10000h", new byte[] { (byte) 0xC3, 0x00, 0x00 }, VALUE_OUT_OF_RANGE_10000);
+        addDataItem(" JP -8000h", new byte[] { (byte) 0xC3, 0x00, (byte) 0x80 });
+        addDataItem(" JP -8001h", new byte[] { (byte) 0xC3, (byte) 0xFF, 0x7F }, new ValueOutOfRangeErrorMessage(-0x8001));
+        // - JP cc, nn
+        addDataItem(" JP NZ,1234h", new byte[] { (byte) 0xC2, 0x34, 0x12 });
+        addDataItem(" JP Z,1234h", new byte[] { (byte) 0xCA, 0x34, 0x12 });
+        addDataItem(" JP NC,1234h", new byte[] { (byte) 0xD2, 0x34, 0x12 });
+        addDataItem(" JP C,1234h", new byte[] { (byte) 0xDA, 0x34, 0x12 });
+        addDataItem(" JP PO,1234h", new byte[] { (byte) 0xE2, 0x34, 0x12 });
+        addDataItem(" JP PE,1234h", new byte[] { (byte) 0xEA, 0x34, 0x12 });
+        addDataItem(" JP P,1234h", new byte[] { (byte) 0xF2, 0x34, 0x12 });
+        addDataItem(" JP M,1234h", new byte[] { (byte) 0xFA, 0x34, 0x12 });
+        addDataItem(" JP Q,1234h", new byte[] { (byte) 0xC2, 0x34, 0x12 }, new InvalidConditionErrorMessage("Q"));
+        // - JP (HL)
+        addDataItem(" JP (HL)", new byte[] { (byte) 0xE9 });
+        // - JP (IX)
+        addDataItem(" JP (IX)", new byte[] { (byte) 0xDD, (byte) 0xE9 });
+        // - JP (IY)
+        addDataItem(" JP (IY)", new byte[] { (byte) 0xFD, (byte) 0xE9 });
+        // - invalid forms
+        addDataItem(" JP", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" JP NZ,1234h,0", new byte[] { (byte) 0xC2, 0x34, 0x12 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" JP A", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" JP (IX+0)", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" JP (IX+12h)", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" JP (IY+0)", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" JP (IY+12h)", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" JP NZ,A", new byte[] { (byte) 0xC2, 0x00, 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
 
         // LD
         // - LD r, r'

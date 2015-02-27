@@ -173,6 +173,11 @@ final class Z80AssemblyContext implements Consumer<AssemblyMessage>, CustomAssem
         return this.getSymbolByContextAndName(MNEMONIC, name, Mnemonics.SYMBOL_RESOLUTION_FALLBACK);
     }
 
+    String getOperandText(int operandIndex) {
+        this.logicalLineReader.setRange(this.sourceLocation, this.logicalLine.getOperandBounds(operandIndex));
+        return this.logicalLineReader.readToString();
+    }
+
     boolean requireNumberOfOperands(int requiredNumberOfOperands) {
         if (this.numberOfOperands != requiredNumberOfOperands) {
             this.addWrongNumberOfOperandsErrorMessage();
@@ -200,11 +205,6 @@ final class Z80AssemblyContext implements Consumer<AssemblyMessage>, CustomAssem
         }
 
         this.logicalLineReader.setRange(this.sourceLocation, mnemonicBounds);
-        return this.logicalLineReader.readToString();
-    }
-
-    private String getOperandText(int operandIndex) {
-        this.logicalLineReader.setRange(this.sourceLocation, this.logicalLine.getOperandBounds(operandIndex));
         return this.logicalLineReader.readToString();
     }
 
