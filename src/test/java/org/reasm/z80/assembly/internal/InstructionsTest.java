@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.reasm.AssemblyMessage;
+import org.reasm.commons.messages.RelativeBranchTargetOutOfRangeErrorMessage;
 import org.reasm.commons.messages.ValueOutOfRangeErrorMessage;
 import org.reasm.z80.messages.InvalidConditionErrorMessage;
 import org.reasm.z80.messages.InvalidImmediateModeErrorMessage;
@@ -284,6 +285,40 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" JP (IY+0)", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
         addDataItem(" JP (IY+12h)", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
         addDataItem(" JP NZ,A", new byte[] { (byte) 0xC2, 0x00, 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+
+        // JR
+        // - JR e
+        addDataItem(" JR 0", new byte[] { 0x18, (byte) 0xFE });
+        addDataItem(" JR 23h", new byte[] { 0x18, 0x21 });
+        addDataItem(" JR 81h", new byte[] { 0x18, 0x7F });
+        addDataItem(" JR 82h", new byte[] { 0x18, (byte) 0x80 }, new RelativeBranchTargetOutOfRangeErrorMessage(0x80));
+        addDataItem(" JR -7Eh", new byte[] { 0x18, (byte) 0x80 });
+        addDataItem(" JR -7Fh", new byte[] { 0x18, 0x7F }, new RelativeBranchTargetOutOfRangeErrorMessage(-0x81));
+        // - JR C, e
+        // - JR NC, e
+        // - JR Z, e
+        // - JR NZ, e
+        addDataItem(" JR NZ,23h", new byte[] { 0x20, 0x21 });
+        addDataItem(" JR Z,23h", new byte[] { 0x28, 0x21 });
+        addDataItem(" JR NC,23h", new byte[] { 0x30, 0x21 });
+        addDataItem(" JR C,23h", new byte[] { 0x38, 0x21 });
+        addDataItem(" JR PO,23h", new byte[] { 0x20, 0x21 }, new InvalidConditionErrorMessage("PO"));
+        addDataItem(" JR PE,23h", new byte[] { 0x28, 0x21 }, new InvalidConditionErrorMessage("PE"));
+        addDataItem(" JR P,23h", new byte[] { 0x30, 0x21 }, new InvalidConditionErrorMessage("P"));
+        addDataItem(" JR M,23h", new byte[] { 0x38, 0x21 }, new InvalidConditionErrorMessage("M"));
+        addDataItem(" JR Q,23h", new byte[] { 0x20, 0x21 }, new InvalidConditionErrorMessage("Q"));
+        // - invalid forms
+        addDataItem(" JR", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" JR NZ,23h,0", new byte[] { 0x20, 0x21 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" JR A", new byte[] { 0x18, (byte) 0xFE }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" JR (HL)", new byte[] { 0x18, (byte) 0xFE }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" JR (IX)", new byte[] { 0x18, (byte) 0xFE }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" JR (IY)", new byte[] { 0x18, (byte) 0xFE }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" JR (IX+0)", new byte[] { 0x18, (byte) 0xFE }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" JR (IX+12h)", new byte[] { 0x18, (byte) 0xFE }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" JR (IY+0)", new byte[] { 0x18, (byte) 0xFE }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" JR (IY+12h)", new byte[] { 0x18, (byte) 0xFE }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" JR NZ,A", new byte[] { 0x20, (byte) 0xFE }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
 
         // LD
         // - LD r, r'
