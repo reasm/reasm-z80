@@ -172,6 +172,25 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" DI", new byte[] { (byte) 0xF3 });
         // --> see NOP for more tests
 
+        // DJNZ
+        addDataItem(" DJNZ 0", new byte[] { 0x10, (byte) 0xFE });
+        addDataItem(" DJNZ 23h", new byte[] { 0x10, 0x21 });
+        addDataItem(" DJNZ 81h", new byte[] { 0x10, 0x7F });
+        addDataItem(" DJNZ 82h", new byte[] { 0x10, (byte) 0x80 }, new RelativeBranchTargetOutOfRangeErrorMessage(0x80));
+        addDataItem(" DJNZ -7Eh", new byte[] { 0x10, (byte) 0x80 });
+        addDataItem(" DJNZ -7Fh", new byte[] { 0x10, 0x7F }, new RelativeBranchTargetOutOfRangeErrorMessage(-0x81));
+        // - invalid forms
+        addDataItem(" DJNZ", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" DJNZ 23h,0", new byte[] { 0x10, 0x21 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" DJNZ A", new byte[] { 0x10, (byte) 0xFE }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" DJNZ (HL)", new byte[] { 0x10, (byte) 0xFE }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" DJNZ (IX)", new byte[] { 0x10, (byte) 0xFE }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" DJNZ (IY)", new byte[] { 0x10, (byte) 0xFE }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" DJNZ (IX+0)", new byte[] { 0x10, (byte) 0xFE }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" DJNZ (IX+12h)", new byte[] { 0x10, (byte) 0xFE }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" DJNZ (IY+0)", new byte[] { 0x10, (byte) 0xFE }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" DJNZ (IY+12h)", new byte[] { 0x10, (byte) 0xFE }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+
         // EI
         addDataItem(" EI", new byte[] { (byte) 0xFB });
         // --> see NOP for more tests
