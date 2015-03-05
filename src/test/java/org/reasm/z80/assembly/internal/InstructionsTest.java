@@ -588,6 +588,22 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" RES 0,B", new byte[] { (byte) 0xCB, (byte) 0x80 });
         // --> see BIT for more tests
 
+        // RET
+        // - RET
+        addDataItem(" RET", new byte[] { (byte) 0xC9 });
+        // - RET cc
+        addDataItem(" RET NZ", new byte[] { (byte) 0xC0 });
+        addDataItem(" RET Z", new byte[] { (byte) 0xC8 });
+        addDataItem(" RET NC", new byte[] { (byte) 0xD0 });
+        addDataItem(" RET C", new byte[] { (byte) 0xD8 });
+        addDataItem(" RET PO", new byte[] { (byte) 0xE0 });
+        addDataItem(" RET PE", new byte[] { (byte) 0xE8 });
+        addDataItem(" RET P", new byte[] { (byte) 0xF0 });
+        addDataItem(" RET M", new byte[] { (byte) 0xF8 });
+        addDataItem(" RET Q", new byte[] { (byte) 0xC0 }, INVALID_CONDITION_Q);
+        // - invalid forms
+        addDataItem(" RET NZ,0", new byte[] { (byte) 0xC0 }, WRONG_NUMBER_OF_OPERANDS);
+
         // RETI
         addDataItem(" RETI", new byte[] { (byte) 0xED, 0x4D });
         // --> see NOP for more tests

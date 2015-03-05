@@ -76,6 +76,7 @@ public final class Mnemonics {
     public static final String POP = "POP";
     public static final String PUSH = "PUSH";
     public static final String RES = "RES";
+    public static final String RET = "RET";
     public static final String RETI = "RETI";
     public static final String RETN = "RETN";
     public static final String RL = "RL";
@@ -170,6 +171,7 @@ public final class Mnemonics {
         map.put(POP, PushPopInstruction.POP);
         map.put(PUSH, PushPopInstruction.PUSH);
         map.put(RES, BitManipulationInstruction.RES);
+        map.put(RET, RetInstruction.RET);
         map.put(RETI, SimpleLongInstruction.RETI);
         map.put(RETN, SimpleLongInstruction.RETN);
         map.put(RL, RotateShiftInstruction.RL);
