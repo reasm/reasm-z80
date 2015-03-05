@@ -14,6 +14,7 @@ import org.reasm.commons.messages.RelativeBranchTargetOutOfRangeErrorMessage;
 import org.reasm.commons.messages.ValueOutOfRangeErrorMessage;
 import org.reasm.z80.messages.InvalidConditionErrorMessage;
 import org.reasm.z80.messages.InvalidImmediateModeErrorMessage;
+import org.reasm.z80.messages.InvalidRestartTargetErrorMessage;
 
 /**
  * Test class for all Z80 family instructions.
@@ -662,6 +663,24 @@ public class InstructionsTest extends BaseProgramsTest {
         // RRD
         addDataItem(" RRD", new byte[] { (byte) 0xED, 0x67 });
         // --> see NOP for more tests
+
+        // RST
+        addDataItem(" RST 0", new byte[] { (byte) 0xC7 });
+        addDataItem(" RST 8", new byte[] { (byte) 0xCF });
+        addDataItem(" RST 10h", new byte[] { (byte) 0xD7 });
+        addDataItem(" RST 18h", new byte[] { (byte) 0xDF });
+        addDataItem(" RST 20h", new byte[] { (byte) 0xE7 });
+        addDataItem(" RST 28h", new byte[] { (byte) 0xEF });
+        addDataItem(" RST 30h", new byte[] { (byte) 0xF7 });
+        addDataItem(" RST 38h", new byte[] { (byte) 0xFF });
+        addDataItem(" RST 23h", new byte[] { (byte) 0xE7 }, new InvalidRestartTargetErrorMessage(0x23));
+        addDataItem(" RST 138h", new byte[] { (byte) 0xFF }, new InvalidRestartTargetErrorMessage(0x138));
+        addDataItem(" RST 10038h", new byte[] { (byte) 0xFF }, new InvalidRestartTargetErrorMessage(0x10038));
+        addDataItem(" RST 100000038h", new byte[] { (byte) 0xFF }, new InvalidRestartTargetErrorMessage(0x100000038L));
+        // - invalid forms
+        addDataItem(" RST", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" RST 0,0", new byte[] { (byte) 0xC7 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" RST A", new byte[] { (byte) 0xC7 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
 
         // SBC
         addDataItem(" SBC A,B", new byte[] { (byte) 0x98 });

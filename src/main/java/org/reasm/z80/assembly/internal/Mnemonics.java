@@ -89,6 +89,7 @@ public final class Mnemonics {
     public static final String RRC = "RRC";
     public static final String RRCA = "RRCA";
     public static final String RRD = "RRD";
+    public static final String RST = "RST";
     public static final String SBC = "SBC";
     public static final String SCF = "SCF";
     public static final String SET = "SET";
@@ -184,6 +185,7 @@ public final class Mnemonics {
         map.put(RRC, RotateShiftInstruction.RRC);
         map.put(RRCA, SimpleInstruction.RRCA);
         map.put(RRD, SimpleLongInstruction.RRD);
+        map.put(RST, RstInstruction.RST);
         map.put(SBC, AdcSbcInstruction.SBC);
         map.put(SCF, SimpleInstruction.SCF);
         map.put(SET, BitManipulationInstruction.SET);
