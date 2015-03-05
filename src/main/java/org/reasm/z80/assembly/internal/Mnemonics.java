@@ -54,6 +54,7 @@ public final class Mnemonics {
     public static final String EXX = "EXX";
     public static final String HALT = "HALT";
     public static final String IM = "IM";
+    public static final String IN = "IN";
     public static final String INC = "INC";
     public static final String IND = "IND";
     public static final String INDR = "INDR";
@@ -71,6 +72,7 @@ public final class Mnemonics {
     public static final String OR = "OR";
     public static final String OTDR = "OTDR";
     public static final String OTIR = "OTIR";
+    public static final String OUT = "OUT";
     public static final String OUTD = "OUTD";
     public static final String OUTI = "OUTI";
     public static final String POP = "POP";
@@ -150,6 +152,7 @@ public final class Mnemonics {
         map.put(EXX, SimpleInstruction.EXX);
         map.put(HALT, SimpleInstruction.HALT);
         map.put(IM, ImInstruction.IM);
+        map.put(IN, InOutInstruction.IN);
         map.put(INC, IncDecInstruction.INC);
         map.put(IND, SimpleLongInstruction.IND);
         map.put(INDR, SimpleLongInstruction.INDR);
@@ -167,6 +170,7 @@ public final class Mnemonics {
         map.put(OR, BinaryArithmeticLogicalInstruction.OR);
         map.put(OTDR, SimpleLongInstruction.OTDR);
         map.put(OTIR, SimpleLongInstruction.OTIR);
+        map.put(OUT, InOutInstruction.OUT);
         map.put(OUTD, SimpleLongInstruction.OUTD);
         map.put(OUTI, SimpleLongInstruction.OUTI);
         map.put(POP, PushPopInstruction.POP);

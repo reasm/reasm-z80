@@ -27,6 +27,10 @@ public class InstructionsTest extends BaseProgramsTest {
     @Nonnull
     private static final AssemblyMessage INVALID_CONDITION_Q = new InvalidConditionErrorMessage("Q");
     @Nonnull
+    private static final AssemblyMessage VALUE_OUT_OF_RANGE_100 = new ValueOutOfRangeErrorMessage(0x100);
+    @Nonnull
+    private static final AssemblyMessage VALUE_OUT_OF_RANGE_MINUS_81 = new ValueOutOfRangeErrorMessage(-0x81);
+    @Nonnull
     private static final AssemblyMessage VALUE_OUT_OF_RANGE_10000 = new ValueOutOfRangeErrorMessage(0x10000);
     @Nonnull
     private static final AssemblyMessage VALUE_OUT_OF_RANGE_MINUS_8001 = new ValueOutOfRangeErrorMessage(-0x8001);
@@ -266,6 +270,30 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" IM 0,0", new byte[] { (byte) 0xED, 0x46 }, WRONG_NUMBER_OF_OPERANDS);
         addDataItem(" IM A", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
 
+        // IN
+        // - IN A, (n)
+        addDataItem(" IN A,(0)", new byte[] { (byte) 0xDB, 0x00 });
+        addDataItem(" IN A,(23h)", new byte[] { (byte) 0xDB, 0x23 });
+        addDataItem(" IN A,(0FFh)", new byte[] { (byte) 0xDB, (byte) 0xFF });
+        addDataItem(" IN A,(100h)", new byte[] { (byte) 0xDB, 0x00 }, VALUE_OUT_OF_RANGE_100);
+        addDataItem(" IN A,(-80h)", new byte[] { (byte) 0xDB, (byte) 0x80 });
+        addDataItem(" IN A,(-81h)", new byte[] { (byte) 0xDB, 0x7F }, VALUE_OUT_OF_RANGE_MINUS_81);
+        // - IN r, (C)
+        addDataItem(" IN B,(C)", new byte[] { (byte) 0xED, 0x40 });
+        addDataItem(" IN C,(C)", new byte[] { (byte) 0xED, 0x48 });
+        addDataItem(" IN D,(C)", new byte[] { (byte) 0xED, 0x50 });
+        addDataItem(" IN E,(C)", new byte[] { (byte) 0xED, 0x58 });
+        addDataItem(" IN H,(C)", new byte[] { (byte) 0xED, 0x60 });
+        addDataItem(" IN L,(C)", new byte[] { (byte) 0xED, 0x68 });
+        addDataItem(" IN A,(C)", new byte[] { (byte) 0xED, 0x78 });
+        // - invalid forms
+        addDataItem(" IN", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" IN A", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" IN A,(0),A", new byte[] { (byte) 0xDB, 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" IN (HL),(C)", new byte[] { (byte) 0xED, 0x70 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" IN B,(0)", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" IN HL,(C)", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+
         // INC
         // - INC r
         addDataItem(" INC B", new byte[] { 0x04 });
@@ -394,9 +422,9 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" LD B,0", new byte[] { 0x06, 0x00 });
         addDataItem(" LD A,0", new byte[] { 0x3E, 0x00 });
         addDataItem(" LD B,0FFh", new byte[] { 0x06, (byte) 0xFF });
-        addDataItem(" LD B,100h", new byte[] { 0x06, 0x00 }, new ValueOutOfRangeErrorMessage(0x100));
+        addDataItem(" LD B,100h", new byte[] { 0x06, 0x00 }, VALUE_OUT_OF_RANGE_100);
         addDataItem(" LD B,-80h", new byte[] { 0x06, (byte) 0x80 });
-        addDataItem(" LD B,-81h", new byte[] { 0x06, 0x7F }, new ValueOutOfRangeErrorMessage(-0x81));
+        addDataItem(" LD B,-81h", new byte[] { 0x06, 0x7F }, VALUE_OUT_OF_RANGE_MINUS_81);
         // - LD r, (HL)
         addDataItem(" LD B,(HL)", new byte[] { 0x46 });
         addDataItem(" LD A,(HL)", new byte[] { 0x7E });
@@ -561,6 +589,30 @@ public class InstructionsTest extends BaseProgramsTest {
         // OTIR
         addDataItem(" OTIR", new byte[] { (byte) 0xED, (byte) 0xB3 });
         // --> see NOP for more tests
+
+        // OUT
+        // - OUT (n), A
+        addDataItem(" OUT (0),A", new byte[] { (byte) 0xD3, 0x00 });
+        addDataItem(" OUT (23h),A", new byte[] { (byte) 0xD3, 0x23 });
+        addDataItem(" OUT (0FFh),A", new byte[] { (byte) 0xD3, (byte) 0xFF });
+        addDataItem(" OUT (100h),A", new byte[] { (byte) 0xD3, 0x00 }, VALUE_OUT_OF_RANGE_100);
+        addDataItem(" OUT (-80h),A", new byte[] { (byte) 0xD3, (byte) 0x80 });
+        addDataItem(" OUT (-81h),A", new byte[] { (byte) 0xD3, 0x7F }, VALUE_OUT_OF_RANGE_MINUS_81);
+        // - OUT (C), r
+        addDataItem(" OUT (C),B", new byte[] { (byte) 0xED, 0x41 });
+        addDataItem(" OUT (C),C", new byte[] { (byte) 0xED, 0x49 });
+        addDataItem(" OUT (C),D", new byte[] { (byte) 0xED, 0x51 });
+        addDataItem(" OUT (C),E", new byte[] { (byte) 0xED, 0x59 });
+        addDataItem(" OUT (C),H", new byte[] { (byte) 0xED, 0x61 });
+        addDataItem(" OUT (C),L", new byte[] { (byte) 0xED, 0x69 });
+        addDataItem(" OUT (C),A", new byte[] { (byte) 0xED, 0x79 });
+        // - invalid forms
+        addDataItem(" OUT", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" OUT (0)", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" OUT (0),A,A", new byte[] { (byte) 0xD3, 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" OUT (C),(HL)", new byte[] { (byte) 0xED, 0x71 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" OUT (0),B", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" OUT (C),HL", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
 
         // OUTD
         addDataItem(" OUTD", new byte[] { (byte) 0xED, (byte) 0xAB });
