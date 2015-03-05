@@ -37,6 +37,7 @@ public final class Mnemonics {
     public static final String ADD = "ADD";
     public static final String AND = "AND";
     public static final String BIT = "BIT";
+    public static final String CALL = "CALL";
     public static final String CCF = "CCF";
     public static final String CP = "CP";
     public static final String CPD = "CPD";
@@ -130,6 +131,7 @@ public final class Mnemonics {
         map.put(ADD, AddInstruction.ADD);
         map.put(AND, BinaryArithmeticLogicalInstruction.AND);
         map.put(BIT, BitManipulationInstruction.BIT);
+        map.put(CALL, CallInstruction.CALL);
         map.put(CCF, SimpleInstruction.CCF);
         map.put(CP, BinaryArithmeticLogicalInstruction.CP);
         map.put(CPD, SimpleLongInstruction.CPD);

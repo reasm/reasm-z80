@@ -24,7 +24,11 @@ import org.reasm.z80.messages.InvalidImmediateModeErrorMessage;
 public class InstructionsTest extends BaseProgramsTest {
 
     @Nonnull
+    private static final AssemblyMessage INVALID_CONDITION_Q = new InvalidConditionErrorMessage("Q");
+    @Nonnull
     private static final AssemblyMessage VALUE_OUT_OF_RANGE_10000 = new ValueOutOfRangeErrorMessage(0x10000);
+    @Nonnull
+    private static final AssemblyMessage VALUE_OUT_OF_RANGE_MINUS_8001 = new ValueOutOfRangeErrorMessage(-0x8001);
 
     @Nonnull
     private static final ArrayList<Object[]> TEST_DATA = new ArrayList<>();
@@ -129,6 +133,37 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" BIT 0,B,B", new byte[] { (byte) 0xCB, 0x40 }, WRONG_NUMBER_OF_OPERANDS);
         addDataItem(" BIT 0,HL", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
         addDataItem(" BIT B,B", new byte[] { 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+
+        // CALL
+        // - CALL nn
+        addDataItem(" CALL 0", new byte[] { (byte) 0xCD, 0x00, 0x00 });
+        addDataItem(" CALL 1234h", new byte[] { (byte) 0xCD, 0x34, 0x12 });
+        addDataItem(" CALL 0FFFFh", new byte[] { (byte) 0xCD, (byte) 0xFF, (byte) 0xFF });
+        addDataItem(" CALL 10000h", new byte[] { (byte) 0xCD, 0x00, 0x00 }, VALUE_OUT_OF_RANGE_10000);
+        addDataItem(" CALL -8000h", new byte[] { (byte) 0xCD, 0x00, (byte) 0x80 });
+        addDataItem(" CALL -8001h", new byte[] { (byte) 0xCD, (byte) 0xFF, 0x7F }, VALUE_OUT_OF_RANGE_MINUS_8001);
+        // - CALL cc, nn
+        addDataItem(" CALL NZ,1234h", new byte[] { (byte) 0xC4, 0x34, 0x12 });
+        addDataItem(" CALL Z,1234h", new byte[] { (byte) 0xCC, 0x34, 0x12 });
+        addDataItem(" CALL NC,1234h", new byte[] { (byte) 0xD4, 0x34, 0x12 });
+        addDataItem(" CALL C,1234h", new byte[] { (byte) 0xDC, 0x34, 0x12 });
+        addDataItem(" CALL PO,1234h", new byte[] { (byte) 0xE4, 0x34, 0x12 });
+        addDataItem(" CALL PE,1234h", new byte[] { (byte) 0xEC, 0x34, 0x12 });
+        addDataItem(" CALL P,1234h", new byte[] { (byte) 0xF4, 0x34, 0x12 });
+        addDataItem(" CALL M,1234h", new byte[] { (byte) 0xFC, 0x34, 0x12 });
+        addDataItem(" CALL Q,1234h", new byte[] { (byte) 0xC4, 0x34, 0x12 }, INVALID_CONDITION_Q);
+        // - invalid forms
+        addDataItem(" CALL", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" CALL NZ,1234h,0", new byte[] { (byte) 0xC4, 0x34, 0x12 }, WRONG_NUMBER_OF_OPERANDS);
+        addDataItem(" CALL A", new byte[] { (byte) 0xCD, 0x00, 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" CALL (HL)", new byte[] { (byte) 0xCD, 0x00, 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" CALL (IX)", new byte[] { (byte) 0xCD, 0x00, 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" CALL (IY)", new byte[] { (byte) 0xCD, 0x00, 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" CALL (IX+0)", new byte[] { (byte) 0xCD, 0x00, 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" CALL (IX+12h)", new byte[] { (byte) 0xCD, 0x00, 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" CALL (IY+0)", new byte[] { (byte) 0xCD, 0x00, 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" CALL (IY+12h)", new byte[] { (byte) 0xCD, 0x00, 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
+        addDataItem(" CALL NZ,A", new byte[] { (byte) 0xC4, 0x00, 0x00 }, ADDRESSING_MODE_NOT_ALLOWED_HERE);
 
         // CCF
         addDataItem(" CCF", new byte[] { 0x3F });
@@ -278,7 +313,7 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" JP 0FFFFh", new byte[] { (byte) 0xC3, (byte) 0xFF, (byte) 0xFF });
         addDataItem(" JP 10000h", new byte[] { (byte) 0xC3, 0x00, 0x00 }, VALUE_OUT_OF_RANGE_10000);
         addDataItem(" JP -8000h", new byte[] { (byte) 0xC3, 0x00, (byte) 0x80 });
-        addDataItem(" JP -8001h", new byte[] { (byte) 0xC3, (byte) 0xFF, 0x7F }, new ValueOutOfRangeErrorMessage(-0x8001));
+        addDataItem(" JP -8001h", new byte[] { (byte) 0xC3, (byte) 0xFF, 0x7F }, VALUE_OUT_OF_RANGE_MINUS_8001);
         // - JP cc, nn
         addDataItem(" JP NZ,1234h", new byte[] { (byte) 0xC2, 0x34, 0x12 });
         addDataItem(" JP Z,1234h", new byte[] { (byte) 0xCA, 0x34, 0x12 });
@@ -288,7 +323,7 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" JP PE,1234h", new byte[] { (byte) 0xEA, 0x34, 0x12 });
         addDataItem(" JP P,1234h", new byte[] { (byte) 0xF2, 0x34, 0x12 });
         addDataItem(" JP M,1234h", new byte[] { (byte) 0xFA, 0x34, 0x12 });
-        addDataItem(" JP Q,1234h", new byte[] { (byte) 0xC2, 0x34, 0x12 }, new InvalidConditionErrorMessage("Q"));
+        addDataItem(" JP Q,1234h", new byte[] { (byte) 0xC2, 0x34, 0x12 }, INVALID_CONDITION_Q);
         // - JP (HL)
         addDataItem(" JP (HL)", new byte[] { (byte) 0xE9 });
         // - JP (IX)
@@ -325,7 +360,7 @@ public class InstructionsTest extends BaseProgramsTest {
         addDataItem(" JR PE,23h", new byte[] { 0x28, 0x21 }, new InvalidConditionErrorMessage("PE"));
         addDataItem(" JR P,23h", new byte[] { 0x30, 0x21 }, new InvalidConditionErrorMessage("P"));
         addDataItem(" JR M,23h", new byte[] { 0x38, 0x21 }, new InvalidConditionErrorMessage("M"));
-        addDataItem(" JR Q,23h", new byte[] { 0x20, 0x21 }, new InvalidConditionErrorMessage("Q"));
+        addDataItem(" JR Q,23h", new byte[] { 0x20, 0x21 }, INVALID_CONDITION_Q);
         // - invalid forms
         addDataItem(" JR", new byte[] { 0x00 }, WRONG_NUMBER_OF_OPERANDS);
         addDataItem(" JR NZ,23h,0", new byte[] { 0x20, 0x21 }, WRONG_NUMBER_OF_OPERANDS);
