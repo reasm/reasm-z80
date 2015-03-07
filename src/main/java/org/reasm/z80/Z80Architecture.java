@@ -57,8 +57,8 @@ public final class Z80Architecture extends Architecture {
         final SymbolLookup symbolLookup = new SymbolLookup() {
             @Override
             public Symbol getSymbol(String name) {
-                final SymbolReference symbolReference = assembly.resolveSymbolReference(SymbolContext.VALUE, name, false, false,
-                        null, null);
+                final SymbolReference symbolReference = assembly.resolveSymbolReference(SymbolContext.VALUE, name, false, null,
+                        null);
 
                 if (symbolReferenceConsumer != null) {
                     symbolReferenceConsumer.accept(symbolReference);

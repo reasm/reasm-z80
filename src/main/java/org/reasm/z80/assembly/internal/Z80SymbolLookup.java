@@ -55,8 +55,8 @@ final class Z80SymbolLookup implements SymbolLookup {
 
     @Override
     public final Symbol getSymbol(String name) {
-        return this.context.builder.resolveSymbolReference(SymbolContext.VALUE, name, false, false, this.symbolLookupContext,
-                this.context).getSymbol();
+        return this.context.builder
+                .resolveSymbolReference(SymbolContext.VALUE, name, false, this.symbolLookupContext, this.context).getSymbol();
     }
 
     @Override

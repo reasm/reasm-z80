@@ -211,7 +211,7 @@ final class Z80AssemblyContext implements Consumer<AssemblyMessage>, CustomAssem
     @CheckForNull
     private <TValue> Symbol getSymbolByContextAndName(@Nonnull SymbolContext<TValue> context, @Nonnull String name,
             @Nonnull SymbolResolutionFallback symbolResolutionFallback) {
-        return this.builder.resolveSymbolReference(context, name, false, false, null, symbolResolutionFallback).getSymbol();
+        return this.builder.resolveSymbolReference(context, name, false, null, symbolResolutionFallback).getSymbol();
     }
 
     private void initialize(@Nonnull AssemblyStep step) {
